@@ -1,47 +1,45 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+
   workflow_dispatch:
+
 env:
   AZURE_RG: RG3
   AZURE_SUBSCRIPTION: 800982df-0d42-4dd6-bf93-ae1cb4eb99a5
-  AZURE-LOCATION: WestEurope
+  AZURE_LOCATION: WestEurope
+
 jobs:
-   Build-Job:
+  Build-Job:
     runs-on: ubuntu-latest
+
     env:
-      configuration: release
+      configuration: Release
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-    - name: Checkout Sources
-      uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2.0.0
-    with:
-    dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore --configuration ${{ env.configuration }}
-    - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration ${{ env.configuration }}
-    - name: Publish 
-      run: dotnet publish --configuration ${{ env.configuration }} --output ${{runner.temp }}/publish
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration ${{ env.configuration }}
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal --configuration ${{ env.configuration }}
+
+      - name: Publish
+        run: dotnet publish --no-build --configuration ${{ env.configuration }} --output ${{ runner.temp }}/publish
