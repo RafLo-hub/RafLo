@@ -8,18 +8,16 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-workflow_dispatch:
+  workflow_dispatch:
 env:
   AZURE_RG: RG3
-  AZURE_SUBSCRIPTION: <<Subscription ID>>
+  AZURE_SUBSCRIPTION: 800982df-0d42-4dd6-bf93-ae1cb4eb99a5
   AZURE-LOCATION: WestEurope
 jobs:
-  build:
-Build-Job:
+   Build-Job:
     runs-on: ubuntu-latest
     env:
       configuration: release
-    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -33,17 +31,17 @@ Build-Job:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-- name: Checkout Sources
-  uses: actions/checkout@v4
-- name: Setup .NET
-  uses: actions/setup-dotnet@v2.0.0
-  with:
+    - name: Checkout Sources
+      uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2.0.0
+    with:
     dotnet-version: 6.0.x
-- name: Restore dependencies
-  run: dotnet restore
-- name: Build
-  run: dotnet build --no-restore --configuration ${{ env.configuration }}
-- name: Test
-  run: dotnet test --no-build --verbosity normal --configuration ${{ env.configuration }}
-- name: Publish 
-  run: dotnet publish --configuration ${{ env.configuration }} --output ${{runner.temp }}/publish
+   - name: Restore dependencies
+     run: dotnet restore
+   - name: Build
+     run: dotnet build --no-restore --configuration ${{ env.configuration }}
+   - name: Test
+     run: dotnet test --no-build --verbosity normal --configuration ${{ env.configuration }}
+   - name: Publish 
+     run: dotnet publish --configuration ${{ env.configuration }} --output ${{runner.temp }}/publish
