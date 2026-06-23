@@ -8,7 +8,11 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+workflow_dispatch:
+env:
+  AZURE_RG: RG3
+  AZURE_SUBSCRIPTION: <<Subscription ID>>
+  AZURE-LOCATION: WestEurope
 jobs:
   build:
 
